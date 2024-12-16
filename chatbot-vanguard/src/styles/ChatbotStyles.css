@@ -66,6 +66,12 @@
   object-fit: cover; /* Ajusta la imagen para que no se distorsione */
 }
 
+/* Efecto de iluminación del borde */
+.nerdsaurio-image.light-up {
+  border-color: #fff; /* Borde blanco cuando se ilumina */
+  box-shadow: 0 0 15px 5px rgba(38, 211, 38, 0.7); /* Brillo verde */
+}
+
 .chat-input-container {
   position: fixed;
   bottom: 0;
@@ -147,6 +153,51 @@
 .chat-input-button:active {
   background-color: #23036a;
 }
+
+/* Fondo translúcido del modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Contenido del modal */
+.modal-content {
+  background-color: rgb(242, 233, 245);
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #333; /* Título del modal en un tono oscuro */
+  font-weight: bold;
+  font-size: 16px; /* Tamaño de fuente legible */
+
+}
+
+/* Botón para cerrar el modal */
+.close-modal-btn {
+  background-color: #6200ea;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.close-modal-btn:hover {
+  background-color: #3700b3;
+}
+
 
 .dropdown-menu {
   position: absolute;

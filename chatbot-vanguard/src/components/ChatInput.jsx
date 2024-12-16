@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/ChatbotStyles.css';
 
-const ChatInput = () => {
+const ChatInput = ({ setTriggerLight }) => {
   const [selectedContext, setSelectedContext] = useState('');
   const [question, setQuestion] = useState('');
   const [response, setResponse] = useState(''); // Texto completo de la respuesta
@@ -30,6 +30,7 @@ const ChatInput = () => {
       setResponse(''); // Limpia la respuesta completa
       setDisplayedText(''); // Limpia el texto mostrado
       setIsTyping(true); // Inicia el efecto de escritura
+      setTriggerLight(true);
   
       try {
         const response = await fetch("/api/ask", {
@@ -60,6 +61,9 @@ const ChatInput = () => {
         alert("No se pudo conectar al servidor.");
         setIsTyping(false);
       }
+      setTimeout(() => {
+        setTriggerLight(false);
+      }, 1500);
     }
   };
   
@@ -111,7 +115,7 @@ const ChatInput = () => {
       {/* Sección para mostrar la respuesta */}
       {displayedText && (
         <div className="chat-response">
-          <p><strong>Respuesta del Chatbot:</strong> {displayedText}</p>
+          <p><strong>Nerdsaurio dice:</strong> {displayedText}</p>
         </div>
       )}
     </div>
