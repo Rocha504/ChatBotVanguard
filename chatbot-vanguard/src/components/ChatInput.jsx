@@ -111,7 +111,7 @@ const ChatInput = () => {
       {/* Sección para mostrar la respuesta */}
       {displayedText && (
         <div className="chat-response">
-          <p><strong>Respuesta del Chatbot:</strong> {displayedText}</p>
+          <p><strong>Nerdsaurio dice:</strong> {displayedText}</p>
         </div>
       )}
     </div>
