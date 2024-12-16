@@ -2,69 +2,100 @@ import React, { useState } from 'react';
 import '../styles/ChatbotStyles.css';
 
 const ChatInput = () => {
-  // Estados para el tipo de contexto y la pregunta
   const [selectedContext, setSelectedContext] = useState('');
   const [question, setQuestion] = useState('');
+  const [response, setResponse] = useState(''); // Texto completo de la respuesta
+  const [displayedText, setDisplayedText] = useState(''); // Texto que se "escribe"
+  const [isTyping, setIsTyping] = useState(false); // Controla si se está generando la respuesta
 
-  // Opciones de contexto (asociamos los contextos con el nombre del archivo)
   const contextOptions = {
-    general: "General.txt",
-    courseDetails: "courseDetails.txt",
-    professor: "professor.txt"
+    general: "general.txt",
+    metodologias: "metodologias.txt",
+    competencias: "competencias.txt",
+    evaluaciones: "evaluaciones.txt",
+    libros: "libros.txt"
   };
 
-  // Manejar el cambio de contexto
   const handleContextChange = (context) => {
     setSelectedContext(contextOptions[context]);
   };
 
-  // Manejar el cambio en el campo de la pregunta
   const handleQuestionChange = (e) => {
     setQuestion(e.target.value);
   };
 
-  // Manejar el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (question && selectedContext) {
-      // Enviar la pregunta y el nombre del archivo de contexto al backend
+      setResponse(''); // Limpia la respuesta completa
+      setDisplayedText(''); // Limpia el texto mostrado
+      setIsTyping(true); // Inicia el efecto de escritura
+  
       try {
         const response = await fetch("/api/ask", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ question, contextFile: selectedContext })
+          body: JSON.stringify({ question, contextFile: selectedContext }),
         });
-      
+  
         if (!response.ok) {
           const errorData = await response.json();
           console.error("Error del backend:", errorData.error);
           alert("Hubo un error: " + errorData.error);
+          setIsTyping(false);
           return;
         }
-      
+  
         const data = await response.json();
-        console.log("Respuesta del modelo:", data);
-        alert("Respuesta del chatbot: " + data.answer);
+        if (data && data.answer) {
+          setResponse(data.answer); // Guarda la respuesta completa
+          simulateTypingEffect(data.answer); // Inicia el efecto de escritura
+        } else {
+          throw new Error("No se recibió una respuesta válida del backend.");
+        }
       } catch (error) {
         console.error("Error en la solicitud:", error);
         alert("No se pudo conectar al servidor.");
+        setIsTyping(false);
       }
-      
     }
   };
+  
+  // Función para simular el efecto de escritura
+  const simulateTypingEffect = (text) => {
+    let index = 0;
+    const typingSpeed = 50; // Velocidad de escritura en milisegundos
+  
+    setDisplayedText(''); // Asegura que esté vacío al iniciar
+    const typingInterval = setInterval(() => {
+      setDisplayedText((prev) => {
+        // Concatena solo hasta el índice actual del texto
+        const updatedText = text.slice(0, index + 1);
+        return updatedText;
+      });
+  
+      index++;
+  
+      if (index === text.length) {
+        clearInterval(typingInterval); // Detenemos el intervalo cuando se completa la escritura
+        setIsTyping(false);
+      }
+    }, typingSpeed);
+  };
+  
 
   return (
     <div className="chat-input-container">
-      {/* Botones para seleccionar el tipo de pregunta */}
       <div className="context-buttons">
         <button onClick={() => handleContextChange('general')} className="context-button">Pregunta General</button>
-        <button onClick={() => handleContextChange('courseDetails')} className="context-button">Detalles del Curso</button>
-        <button onClick={() => handleContextChange('professor')} className="context-button">Profesor</button>
+        <button onClick={() => handleContextChange('competencias')} className="context-button">Competencias</button>
+        <button onClick={() => handleContextChange('metodologias')} className="context-button">Metodologias de aprendizaje</button>
+        <button onClick={() => handleContextChange('libros')} className="context-button">Bibliografia</button>
+        <button onClick={() => handleContextChange('evaluaciones')} className="context-button">Evaluaciones</button>
       </div>
 
-      {/* Campo de texto para la pregunta */}
       <input
         type="text"
         placeholder="Preguntame sobre temas de la clase..."
@@ -72,9 +103,17 @@ const ChatInput = () => {
         value={question}
         onChange={handleQuestionChange}
       />
-      
-      {/* Botón para enviar la pregunta */}
-      <button className="chat-input-button" onClick={handleSubmit}>Enviar</button>
+
+      <button className="chat-input-button" onClick={handleSubmit} disabled={isTyping}>
+        {isTyping ? 'Escribiendo...' : 'Enviar'}
+      </button>
+
+      {/* Sección para mostrar la respuesta */}
+      {displayedText && (
+        <div className="chat-response">
+          <p><strong>Respuesta del Chatbot:</strong> {displayedText}</p>
+        </div>
+      )}
     </div>
   );
 };

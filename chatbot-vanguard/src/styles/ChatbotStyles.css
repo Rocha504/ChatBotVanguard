@@ -70,25 +70,59 @@
   left: 0;
   right: 0;
   display: flex;
-  align-items: center;
+  flex-direction: column; /* Apila los elementos en columna */
+  align-items: center; /* Centra los elementos horizontalmente */
   padding: 10px;
-  background-color: linear-gradient(135deg, #640A76, #BB13DC);
-  border-top: linear-gradient(135deg, #640A76, #BB13DC);
+  background: linear-gradient(135deg, #640A76, #BB13DC); /* Gradiente morado */
   box-shadow: 0 -2px 5px rgba(74, 4, 4, 0.1);
 }
 
+/* Botones de contexto */
+.context-buttons {
+  display: flex;
+  justify-content: center; /* Centra los botones horizontalmente */
+  margin-bottom: 10px; /* Espacio entre botones y barra de texto */
+}
+
+.context-button {
+  background: linear-gradient(135deg, #8aff91, #32a852); /* Gradiente verde claro */
+  color: #fff; /* Color del texto blanco */
+  font-size: 14px;
+  font-weight: bold; /* Texto más visible */
+  padding: 10px 20px;
+  border: none; /* Sin borde */
+  border-radius: 20px; /* Bordes redondeados */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra para efecto dinámico */
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.context-button:hover {
+  background-color: #3700b3; /* Cambia color al pasar el mouse */
+}
+
+
+/* Campo de texto del chat */
 .chat-input-field {
   flex: 1;
+  width: 100%; /* Barra de texto ocupa todo el ancho */
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
   outline: none;
-  margin-right: 10px;
+  margin-bottom: 10px; /* Espacio debajo de la barra de texto */
   color: #e1e1e1; /* Color del texto */
-  background-color: #474547; /* Cambia el fondo aquí */
-
+  background-color: #474547; /* Fondo oscuro */
 }
+
+.chat-response {
+  margin-top: 20px;
+  padding: 15px;
+  color: #333; /* Texto oscuro */
+  font-size: 16px; 
+}
+
 
 .chat-input-field:focus {
   border-color: #6200ea;
