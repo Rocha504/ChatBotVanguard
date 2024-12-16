@@ -64,6 +64,12 @@
   object-fit: cover; /* Ajusta la imagen para que no se distorsione */
 }
 
+/* Efecto de iluminación del borde */
+.nerdsaurio-image.light-up {
+  border-color: #fff; /* Borde blanco cuando se ilumina */
+  box-shadow: 0 0 15px 5px rgba(38, 211, 38, 0.7); /* Brillo verde */
+}
+
 .chat-input-container {
   position: fixed;
   bottom: 0;
