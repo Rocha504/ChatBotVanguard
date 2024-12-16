@@ -11,7 +11,7 @@ import ChatInput from './components/ChatInput';
 function App() {
   return (
     <div className="App">
-    <ChatbotHeader /> 
+    <ChatbotHeader/> 
     <NerdSaurio/>
     <ChatInput/>
     </div>
